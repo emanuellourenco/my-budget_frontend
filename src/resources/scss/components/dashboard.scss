@@ -1,9 +1,17 @@
-.dashboard__header {
-  padding: 0;
-}
+.dashboard__card {
+  color: white;
 
-.dashboard__content {
-  margin: 24px 16px;
-  padding: 24px;
-  min-height: calc(100vh - 112px);
+  > .ant-card-head {
+    color: white;
+  }
+
+  &--income {
+    background-color: green;
+  }
+  &--expensive {
+    background-color: red;
+  }
+  &--profit {
+    background-color: blue;
+  }
 }
