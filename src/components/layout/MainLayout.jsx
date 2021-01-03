@@ -11,13 +11,13 @@ function MainLayout(props) {
   return (
     <Layout>
       <MainSidebar collapsed={collapsed} />
-      <Layout className="site-layout">
+      <Layout>
         <MainHeader
           collapsed={collapsed}
           setCollapsed={setCollapsed}
-          className="dashboard__header"
+          className="main-layout__header"
         />
-        <Content className="dashboard__content">{children}</Content>
+        <Content className="main-layout__content">{children}</Content>
       </Layout>
     </Layout>
   );

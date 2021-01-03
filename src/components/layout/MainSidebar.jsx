@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout, Menu } from "antd";
-import { UserOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import { HomeOutlined, ProfileOutlined, TagsOutlined } from "@ant-design/icons";
 import { Link, useHistory } from "react-router-dom";
 
 function MainLayout(props) {
@@ -8,16 +8,22 @@ function MainLayout(props) {
   const { Sider } = Layout;
   const { location } = useHistory();
   const menuItems = [
-    { key: "1", icon: <UserOutlined />, label: "Dashboard", url: "/" },
+    { key: "1", icon: <HomeOutlined />, label: "Dashboard", url: "/" },
     {
       key: "2",
-      icon: <VideoCameraOutlined />,
+      icon: <ProfileOutlined />,
       label: "Transactions",
       url: "/transactions",
     },
+    {
+      key: "3",
+      icon: <TagsOutlined />,
+      label: "Tags",
+      url: "/tags",
+    },
   ];
-  const selectedMenu =
-    menuItems.find((item) => item.url === location.pathname).key || 1;
+  const findMenu = menuItems.find((item) => item.url === location.pathname);
+  const selectedMenu = (findMenu && findMenu.key) || 1;
 
   return (
     <Sider
@@ -26,6 +32,7 @@ function MainLayout(props) {
       collapsible
       collapsed={collapsed}
     >
+      <div className="sidebar__logo" />
       <Menu theme="dark" mode="inline" selectedKeys={[selectedMenu]}>
         {menuItems.map((item, index) => {
           return (
