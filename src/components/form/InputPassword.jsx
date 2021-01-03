@@ -1,12 +1,13 @@
 import React from "react";
-import { Input } from "antd";
+import { Col, Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import PropTypes from "prop-types";
 
-function InputPassword(props) {
-  const { name, label, placeholder } = props;
-  
+function PasswordCol(props) {
+  const { cols, name, label, placeholder } = props;
+
   return (
-    <div style={{ margin: "5px" }}>
+    <Col span={cols}>
       <span>{label}</span>
       <Input.Password
         id={name}
@@ -16,8 +17,22 @@ function InputPassword(props) {
           visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
         }
       />
-    </div>
+    </Col>
   );
 }
 
-export default InputPassword;
+PasswordCol.defaultProps = {
+  cols: "24",
+  name: "name",
+  label: "",
+  placeholder: "",
+};
+
+PasswordCol.propTypes = {
+  cols: PropTypes.string,
+  name: PropTypes.string,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+};
+
+export default PasswordCol;
