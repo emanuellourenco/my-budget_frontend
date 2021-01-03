@@ -1,7 +1,5 @@
 import React from "react";
-import { Row, Col } from "antd";
-import { Table, Tag, Space } from "antd";
-
+import { DatePicker, Row, Col, Card, Table, Tag, Space } from "antd";
 import MainLayout from "../components/layout/MainLayout";
 
 function Transactions() {
@@ -76,8 +74,21 @@ function Transactions() {
       tags: ["cool", "teacher"],
     },
   ];
+
+  const onChange = (date, dateString) => {
+    console.log(date, dateString);
+  };
+
   return (
     <MainLayout>
+      <Row>
+        <Col span="24">
+          <Card>
+            <DatePicker onChange={onChange} />
+            <DatePicker onChange={onChange} />
+          </Card>
+        </Col>
+      </Row>
       <Row>
         <Col sm={24}>
           <Table columns={columns} dataSource={data} />

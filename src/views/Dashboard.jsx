@@ -7,13 +7,28 @@ function Login() {
     <MainLayout>
       <Row>
         <Col sm={24} md={12} lg={8}>
-          <Card title="Income">100,00€</Card>
+          <Card
+            title="Income"
+            className="dashboard__card dashboard__card--income"
+          >
+            100,00€
+          </Card>
         </Col>
         <Col sm={24} md={12} lg={8}>
-          <Card title="Expense">20,00€</Card>
+          <Card
+            title="Expense"
+            className="dashboard__card dashboard__card--expensive"
+          >
+            20,00€
+          </Card>
         </Col>
         <Col sm={24} md={12} lg={8}>
-          <Card title="Profit">80,00€</Card>
+          <Card
+            title="Profit"
+            className="dashboard__card dashboard__card--profit"
+          >
+            80,00€
+          </Card>
         </Col>
       </Row>
     </MainLayout>
