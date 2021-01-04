@@ -1,10 +1,31 @@
 import React, { useState } from "react";
 import { Row, Col, Card, Table, Tag, Button, Tooltip } from "antd";
 import MainLayout from "../components/layout/MainLayout";
-import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import TagModal from "../components/modals/Tags";
+import ActionButtons from "../components/table/ActionButtons";
 
 function Tags() {
+  const [data, setData] = useState([
+    {
+      key: "1",
+      name: "Salary",
+      rule: "Salary",
+      color: "green",
+    },
+    {
+      key: "2",
+      name: "Shop",
+      rule: "Shop",
+      color: "blue",
+    },
+    {
+      key: "3",
+      name: "Car",
+      rule: "Fuel",
+      color: "red",
+    },
+  ]);
   const [modalOpen, setModalOpen] = useState(false);
   const [dataId, setdataId] = useState(null);
 
@@ -29,47 +50,25 @@ function Tags() {
       key: "action",
       width: "100px",
       render: (text, record) => (
-        <div className="action-buttons">
-          <Tooltip title="Edit">
-            <Button
-              type="primary"
-              shape="circle"
-              icon={<EditOutlined />}
-              onClick={() => handleChangeModal(record.key)}
-            />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <Button type="danger" shape="circle" icon={<DeleteOutlined />} />
-          </Tooltip>
-        </div>
+        <ActionButtons
+          record={record}
+          handleChangeModal={handleChangeModal}
+          removeData={removeData}
+        />
       ),
-    },
-  ];
-
-  const data = [
-    {
-      key: "1",
-      name: "Salary",
-      rule: "Salary",
-      color: "green",
-    },
-    {
-      key: "2",
-      name: "Shop",
-      rule: "Shop",
-      color: "blue",
-    },
-    {
-      key: "3",
-      name: "Car",
-      rule: "Fuel",
-      color: "red",
     },
   ];
 
   const handleChangeModal = (id) => {
     setModalOpen(true);
     setdataId(id);
+  };
+
+  const removeData = (key) => {
+    const index = data.findIndex((item) => item.key === key);
+    const newData = [...data];
+    newData.splice(index, 1);
+    setData(newData);
   };
 
   return (
