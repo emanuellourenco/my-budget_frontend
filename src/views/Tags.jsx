@@ -1,31 +1,51 @@
-import React from "react";
-import { Row, Col, Card, Table, Space, Select, Tag } from "antd";
+import React, { useState } from "react";
+import { Row, Col, Card, Table, Space, Tag, Button, Tooltip } from "antd";
 import MainLayout from "../components/layout/MainLayout";
-import Input from "../components/form/Input";
+import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import TagModal from "../components/modals/Tags";
 
 function Tags() {
-  const colors = [
-    { label: "Red", value: "red" },
-    { label: "Blue", value: "blue" },
-    { label: "Green", value: "green" },
-    { label: "Yellow", value: "yellow" },
-    { label: "Pink", value: "pink" },
-    { label: "Brown", value: "brown" },
-    { label: "Grey", value: "grey" },
-  ];
+  const [modalOpen, setModalOpen] = useState(false);
+  const [dataId, setdataId] = useState(null);
 
   const columns = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      width: "200px",
       sorter: (a, b) => a.age - b.age,
       render: (text, record) => <Tag color={record.color}>{text}</Tag>,
     },
     {
+      title: "Rule",
+      dataIndex: "rule",
+      key: "rule",
+      sorter: (a, b) => a.age - b.age,
+      render: (text) => <span>{text}</span>,
+    },
+    {
       title: "Action",
       key: "action",
-      render: (text, record) => <Space size="middle">Edit | Delete</Space>,
+      width: "100px",
+      render: (text, record) => {
+        console.log("🚀 ~ file: Tags.jsx ~ line 29 ~ Tags ~ record", record);
+        return (
+          <Space size="middle">
+            <Tooltip title="Edit">
+              <Button
+                type="primary"
+                shape="circle"
+                icon={<EditOutlined />}
+                onClick={() => handleChangeModal(record.key)}
+              />
+            </Tooltip>
+            <Tooltip title="Delete">
+              <Button type="danger" shape="circle" icon={<DeleteOutlined />} />
+            </Tooltip>
+          </Space>
+        );
+      },
     },
   ];
 
@@ -33,57 +53,53 @@ function Tags() {
     {
       key: "1",
       name: "Salary",
+      rule: "Salary",
       color: "green",
     },
     {
       key: "2",
       name: "Shop",
+      rule: "Shop",
       color: "blue",
     },
     {
       key: "3",
       name: "Car",
+      rule: "Fuel",
       color: "red",
     },
   ];
 
-  function tagRender(props) {
-    const { label, value, closable, onClose } = props;
-
-    return (
-      <Tag
-        color={value}
-        closable={closable}
-        onClose={onClose}
-        style={{ marginRight: 3 }}
-      >
-        {label}
-      </Tag>
-    );
-  }
+  const handleChangeModal = (id) => {
+    setModalOpen(true);
+    setdataId(id);
+  };
 
   return (
     <MainLayout>
-      <Row>
-        <Col span="24">
-          <Card>
-            <Input name="name" />
-            <Select
-            //  mode="multiple"
-              className="tags__select"
-              style={{ width: "100%" }}
-              optionLabelProp="label"
-              tagRender={tagRender}
-              options={colors}
-            />
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        <Col sm={24}>
-          <Table columns={columns} dataSource={data} />
-        </Col>
-      </Row>
+      <Card>
+        <Row>
+          <Col span="18">
+            <h1>Tag List</h1>
+          </Col>
+          <Col span="6" style={{ textAlign: "right" }}>
+            <Tooltip title="Add">
+              <Button
+                type="primary"
+                shape="circle"
+                icon={<PlusOutlined />}
+                onClick={() => handleChangeModal(null)}
+              />
+            </Tooltip>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={18}>
+            <Table columns={columns} dataSource={data} />
+            <TagModal isOpen={modalOpen} setIsOpen={setModalOpen} id={dataId} />
+          </Col>
+        </Row>
+      </Card>
     </MainLayout>
   );
 }
