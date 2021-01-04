@@ -34,7 +34,7 @@ function MainLayout(props) {
     >
       <div className="sidebar__logo" />
       <Menu theme="dark" mode="inline" selectedKeys={[selectedMenu]}>
-        {menuItems.map((item, index) => {
+        {menuItems.map((item) => {
           return (
             <Menu.Item key={item.key} icon={item.icon}>
               <Link to={item.url}>{item.label}</Link>
