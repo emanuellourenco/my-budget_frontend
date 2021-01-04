@@ -28,24 +28,21 @@ function Tags() {
       title: "Action",
       key: "action",
       width: "100px",
-      render: (text, record) => {
-        console.log("🚀 ~ file: Tags.jsx ~ line 29 ~ Tags ~ record", record);
-        return (
-          <Space size="middle">
-            <Tooltip title="Edit">
-              <Button
-                type="primary"
-                shape="circle"
-                icon={<EditOutlined />}
-                onClick={() => handleChangeModal(record.key)}
-              />
-            </Tooltip>
-            <Tooltip title="Delete">
-              <Button type="danger" shape="circle" icon={<DeleteOutlined />} />
-            </Tooltip>
-          </Space>
-        );
-      },
+      render: (text, record) => (
+        <Space size="middle">
+          <Tooltip title="Edit">
+            <Button
+              type="primary"
+              shape="circle"
+              icon={<EditOutlined />}
+              onClick={() => handleChangeModal(record.key)}
+            />
+          </Tooltip>
+          <Tooltip title="Delete">
+            <Button type="danger" shape="circle" icon={<DeleteOutlined />} />
+          </Tooltip>
+        </Space>
+      ),
     },
   ];
 
