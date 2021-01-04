@@ -1,11 +1,15 @@
-import React from "react";
-import { Row, Col, Card, Table, Tag, Space, Button, Tooltip } from "antd";
-import DatePicker from "../components/form/DatePicker";
+import React, { useState } from "react";
+import { Row, Col, Card, Table, Tag, Button, Tooltip } from "antd";
+import RangePicker from "../components/form/RangePicker";
 import MainLayout from "../components/layout/MainLayout";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import Select from "../components/form/Select";
+import TransactionsModal from "../components/modals/Transactions";
 
 function Transactions() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [dataId, setdataId] = useState(null);
+
   const columns = [
     {
       title: "Date",
@@ -54,19 +58,19 @@ function Transactions() {
       key: "action",
       width: "100px",
       render: (text, record) => (
-        <Space size="middle">
+        <div className="action-buttons">
           <Tooltip title="Edit">
             <Button
               type="primary"
               shape="circle"
               icon={<EditOutlined />}
-              //  onClick={() => handleChangeModal(record.key)}
+              onClick={() => handleChangeModal(record.key)}
             />
           </Tooltip>
           <Tooltip title="Delete">
             <Button type="danger" shape="circle" icon={<DeleteOutlined />} />
           </Tooltip>
-        </Space>
+        </div>
       ),
     },
   ];
@@ -120,6 +124,11 @@ function Transactions() {
     console.log(date, dateString);
   };
 
+  const handleChangeModal = (id) => {
+    setModalOpen(true);
+    setdataId(id);
+  };
+
   return (
     <MainLayout>
       <Card>
@@ -133,7 +142,7 @@ function Transactions() {
                 type="primary"
                 shape="circle"
                 icon={<PlusOutlined />}
-                //  onClick={() => handleChangeModal(null)}
+                onClick={() => handleChangeModal(null)}
               />
             </Tooltip>
           </Col>
@@ -142,16 +151,10 @@ function Transactions() {
           <Col span="24">
             <h4>Filters</h4>
           </Col>
-          <DatePicker
-            cols="4"
-            label="Date Start"
-            name="dateStart"
-            onChange={onChange}
-          />
-          <DatePicker
-            cols="4"
-            label="End Date"
-            name="dateEnd"
+          <RangePicker
+            cols="8"
+            label="Date"
+            name="rangeDate"
             onChange={onChange}
           />
           <Select
@@ -165,6 +168,11 @@ function Transactions() {
         <Row>
           <Col sm={24}>
             <Table columns={columns} dataSource={data} />
+            <TransactionsModal
+              isOpen={modalOpen}
+              setIsOpen={setModalOpen}
+              id={dataId}
+            />
           </Col>
         </Row>
       </Card>

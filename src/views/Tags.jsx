@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Card, Table, Space, Tag, Button, Tooltip } from "antd";
+import { Row, Col, Card, Table, Tag, Button, Tooltip } from "antd";
 import MainLayout from "../components/layout/MainLayout";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import TagModal from "../components/modals/Tags";
@@ -29,7 +29,7 @@ function Tags() {
       key: "action",
       width: "100px",
       render: (text, record) => (
-        <Space size="middle">
+        <div className="action-buttons">
           <Tooltip title="Edit">
             <Button
               type="primary"
@@ -41,7 +41,7 @@ function Tags() {
           <Tooltip title="Delete">
             <Button type="danger" shape="circle" icon={<DeleteOutlined />} />
           </Tooltip>
-        </Space>
+        </div>
       ),
     },
   ];
