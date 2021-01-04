@@ -7,7 +7,7 @@ function PasswordCol(props) {
   const { cols, name, label, placeholder } = props;
 
   return (
-    <Col span={cols}>
+    <Col className="input__col" span={cols}>
       <span>{label}</span>
       <Input.Password
         id={name}

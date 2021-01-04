@@ -6,7 +6,7 @@ function SelectCol(props) {
   const { cols, label, name, mode, options } = props;
 
   return (
-    <Col span={cols}>
+    <Col className="select__col" span={cols}>
       <span>{label}</span>
       <Select
         id={name}

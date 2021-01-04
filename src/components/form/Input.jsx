@@ -6,7 +6,7 @@ function InputCol(props) {
   const { cols, name, label, placeholder } = props;
 
   return (
-    <Col span={cols}>
+    <Col className="input__col" span={cols}>
       <span>{label}</span>
       <Input id={name} name={name} placeholder={placeholder} />
     </Col>

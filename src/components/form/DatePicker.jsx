@@ -6,7 +6,7 @@ function DatePickerCol(props) {
   const { cols, label, name, onChange } = props;
 
   return (
-    <Col span={cols}>
+    <Col className="date-picker__col" span={cols}>
       <Row>
         <Col span="24">
           <span>{label}</span>
