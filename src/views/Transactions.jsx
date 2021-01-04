@@ -1,6 +1,9 @@
 import React from "react";
-import { DatePicker, Row, Col, Card, Table, Tag, Space } from "antd";
+import { Row, Col, Card, Table, Tag, Space, Button, Tooltip } from "antd";
+import DatePicker from "../components/form/DatePicker";
 import MainLayout from "../components/layout/MainLayout";
+import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import Select from "../components/form/Select";
 
 function Transactions() {
   const columns = [
@@ -8,13 +11,14 @@ function Transactions() {
       title: "Date",
       dataIndex: "date",
       key: "date",
+      width: "100px",
       sorter: (a, b) => a.age - b.age,
       render: (text) => <span>{text}</span>,
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
       sorter: (a, b) => a.age - b.age,
       render: (text) => <span>{text}</span>,
     },
@@ -22,13 +26,13 @@ function Transactions() {
       title: "Tags",
       key: "tags",
       dataIndex: "tags",
+      width: "200px",
       render: (tags) => (
         <>
           {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
+            const findTag = tagsOptions.find((item) => item.label === tag);
+            const color = !!findTag ? findTag.color : "blue";
+
             return (
               <Tag color={color} key={tag}>
                 {tag.toUpperCase()}
@@ -42,36 +46,73 @@ function Transactions() {
       title: "Value",
       dataIndex: "value",
       key: "value",
+      width: "150px",
       sorter: (a, b) => a.age - b.age,
     },
     {
       title: "Action",
       key: "action",
-      render: (text, record) => <Space size="middle">Edit | Delete</Space>,
+      width: "100px",
+      render: (text, record) => (
+        <Space size="middle">
+          <Tooltip title="Edit">
+            <Button
+              type="primary"
+              shape="circle"
+              icon={<EditOutlined />}
+              //  onClick={() => handleChangeModal(record.key)}
+            />
+          </Tooltip>
+          <Tooltip title="Delete">
+            <Button type="danger" shape="circle" icon={<DeleteOutlined />} />
+          </Tooltip>
+        </Space>
+      ),
     },
   ];
 
   const data = [
     {
       key: "1",
-      name: "John Brown",
+      date: "1/12/2020",
+      description: "John Brown",
       age: 32,
       value: "80,00€",
-      tags: ["nice", "developer"],
+      tags: ["Salary"],
     },
     {
       key: "2",
-      name: "Jim Green",
+      date: "25/12/2020",
+      description: "Jim Green",
       age: 42,
       value: "20,00€",
-      tags: ["loser"],
+      tags: ["Salary"],
     },
     {
       key: "3",
-      name: "Joe Black",
+      date: "12/12/2020",
+      description: "Joe Black",
       age: 32,
       value: "-20,00€",
-      tags: ["cool", "teacher"],
+      tags: ["Shop", "Car"],
+    },
+  ];
+
+  const tagsOptions = [
+    {
+      value: "1",
+      label: "Salary",
+      color: "green",
+    },
+    {
+      value: "2",
+      label: "Shop",
+      color: "blue",
+    },
+    {
+      value: "3",
+      label: "Car",
+      color: "red",
     },
   ];
 
@@ -81,19 +122,52 @@ function Transactions() {
 
   return (
     <MainLayout>
-      <Row>
-        <Col span="24">
-          <Card>
-            <DatePicker onChange={onChange} />
-            <DatePicker onChange={onChange} />
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        <Col sm={24}>
-          <Table columns={columns} dataSource={data} />
-        </Col>
-      </Row>
+      <Card>
+        <Row>
+          <Col span="18">
+            <h3>Transactions List</h3>
+          </Col>
+          <Col span="6" style={{ textAlign: "right" }}>
+            <Tooltip title="Add Transaction">
+              <Button
+                type="primary"
+                shape="circle"
+                icon={<PlusOutlined />}
+                //  onClick={() => handleChangeModal(null)}
+              />
+            </Tooltip>
+          </Col>
+        </Row>
+        <Row>
+          <Col span="24">
+            <h4>Filters</h4>
+          </Col>
+          <DatePicker
+            cols="4"
+            label="Date Start"
+            name="dateStart"
+            onChange={onChange}
+          />
+          <DatePicker
+            cols="4"
+            label="End Date"
+            name="dateEnd"
+            onChange={onChange}
+          />
+          <Select
+            cols="12"
+            label="Tags"
+            name="tags"
+            mode="multiple"
+            options={tagsOptions}
+          />
+        </Row>
+        <Row>
+          <Col sm={24}>
+            <Table columns={columns} dataSource={data} />
+          </Col>
+        </Row>
+      </Card>
     </MainLayout>
   );
 }
