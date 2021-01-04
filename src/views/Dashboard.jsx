@@ -6,14 +6,14 @@ import { Chart } from "react-charts";
 function Login() {
   const series = React.useMemo(
     () => ({
-      type: "area",
+      type: "bar",
     }),
     []
   );
   const axes = React.useMemo(
     () => [
       { primary: true, position: "bottom", type: "time" },
-      { position: "left", type: "linear", stacked: true },
+      { position: "left", type: "linear", stacked: false },
     ],
     []
   );
