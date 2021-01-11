@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Row, Col, Card, Table, Tag, Button, Tooltip } from "antd";
 import MainLayout from "../components/layout/MainLayout";
 import { PlusOutlined } from "@ant-design/icons";
@@ -6,26 +7,7 @@ import TagModal from "../components/modals/Tags";
 import ActionButtons from "../components/table/ActionButtons";
 
 function Tags() {
-  const [data, setData] = useState([
-    {
-      key: "1",
-      name: "Salary",
-      rule: "Salary",
-      color: "green",
-    },
-    {
-      key: "2",
-      name: "Shop",
-      rule: "Shop",
-      color: "blue",
-    },
-    {
-      key: "3",
-      name: "Car",
-      rule: "Fuel",
-      color: "red",
-    },
-  ]);
+  const [data, setData] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [dataId, setdataId] = useState(null);
 
@@ -71,6 +53,21 @@ function Tags() {
     setData(newData);
   };
 
+  useEffect(() => {
+    const url = process.env.REACT_APP_URL;
+    const token = localStorage.getItem("token");
+
+    axios
+      .get(`${url}/tags?token=${token}`)
+      .then(({ data }) => {
+        setData(data.tags);
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+      });
+  }, []);
+
   return (
     <MainLayout>
       <Card>
@@ -92,7 +89,12 @@ function Tags() {
         <Row>
           <Col span={18}>
             <Table columns={columns} dataSource={data} />
-            <TagModal isOpen={modalOpen} setIsOpen={setModalOpen} id={dataId} />
+            <TagModal
+              isOpen={modalOpen}
+              setIsOpen={setModalOpen}
+              id={dataId}
+              setData={setData}
+            />
           </Col>
         </Row>
       </Card>
