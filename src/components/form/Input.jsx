@@ -3,12 +3,12 @@ import { Col, Input } from "antd";
 import PropTypes from "prop-types";
 
 function InputCol(props) {
-  const { cols, name, label, placeholder } = props;
+  const { cols, name, label, placeholder, ...other } = props;
 
   return (
     <Col className="input__col" span={cols}>
       <span>{label}</span>
-      <Input id={name} name={name} placeholder={placeholder} />
+      <Input id={name} name={name} placeholder={placeholder} {...other} />
     </Col>
   );
 }

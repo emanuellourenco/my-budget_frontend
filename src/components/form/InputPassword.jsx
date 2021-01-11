@@ -4,7 +4,7 @@ import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import PropTypes from "prop-types";
 
 function PasswordCol(props) {
-  const { cols, name, label, placeholder } = props;
+  const { cols, name, label, placeholder, ...other } = props;
 
   return (
     <Col className="input__col" span={cols}>
@@ -16,6 +16,7 @@ function PasswordCol(props) {
         iconRender={(visible) =>
           visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
         }
+        {...other}
       />
     </Col>
   );
