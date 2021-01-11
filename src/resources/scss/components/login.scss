@@ -1,14 +1,52 @@
-.login__header {
-  padding: 0;
+.login__block {
+  height: 230px;
+  width: 100%;
+  margin-top: 50vh;
+  transform: translate(0, -50%);
 }
 
-.login__content {
-  margin: 24px 16px;
-  padding: 24px;
-  min-height: calc(100vh - 112px);
+.signup__block {
+  width: 100%;
+  margin-top: 50vh;
+  transform: translate(0, -50%);
 }
+/*
+.login__button,
+.login__button:hover {
+  background-color: $login-button-background-color;
+  color: $login-button-color;
+}*/
 
-.login__card {
-  margin-top: 50%;
-  width: 300px;
+.auth {
+  display: flex;
+  overflow: hidden;
+
+  &.auth__login {
+    width: 50vw;
+    height: 100vh;
+    background: $login-background-color;
+    transition: width 2s;
+
+    &.hide--login {
+      width: 0;
+    }
+  }
+
+  &.auth__signup {
+    width: 50vw;
+    height: 100vh;
+    background: $signup-background-color;
+    transition: width 2s;
+
+    &.hide--signup {
+      width: 0;
+    }
+  }
+
+  &.auth__block {
+    width: 50vw;
+    height: 100vh;
+    background: $auth-background-color;
+    z-index: 10;
+  }
 }
