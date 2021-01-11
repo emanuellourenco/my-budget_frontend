@@ -163,6 +163,24 @@ function Transactions() {
             mode="multiple"
             options={tagsOptions}
           />
+          <div style={{ marginTop: "25px" }}>
+            <Tooltip title="Apply">
+              <Button
+                type="primary"
+                shape="circle"
+                icon={<PlusOutlined />}
+                onClick={() => handleChangeModal(null)}
+              />
+            </Tooltip>
+            <Tooltip title="Clear">
+              <Button
+                type="danger"
+                shape="circle"
+                icon={<PlusOutlined />}
+                onClick={() => handleChangeModal(null)}
+              />
+            </Tooltip>
+          </div>
         </Row>
         <Row>
           <Col sm={24}>
