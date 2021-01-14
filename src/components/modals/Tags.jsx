@@ -20,6 +20,9 @@ function Tags(props) {
   const url = process.env.REACT_APP_URL;
   const token = localStorage.getItem("token");
 
+  /**
+   * Get tag data to update
+   */
   useEffect(() => {
     if (id) {
       axios
@@ -32,18 +35,30 @@ function Tags(props) {
           console.log(error);
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
+  /**
+   * Change input data
+   * @param {Object} e
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTags({ [name]: value });
   };
 
+  /**
+   * Change select data
+   * @param {String} option
+   */
   const handleChangeSelect = (option) => {
     setTags({ color: option });
   };
 
-  const handleOk = () => {
+  /**
+   * Submit form, clear data and close modal
+   */
+  const submitForm = () => {
     if (!!tags.id) {
       axios
         .put(`${url}/tags/${id}`, {
@@ -53,7 +68,6 @@ function Tags(props) {
           token,
         })
         .then(({ data }) => {
-          console.log("🚀 ~ .then ~ data", data);
           setData(data.tags);
         })
         .catch((error) => {
@@ -69,7 +83,6 @@ function Tags(props) {
           token,
         })
         .then(({ data }) => {
-          console.log("🚀 ~ .then ~ data", data);
           setData(data.tags);
         })
         .catch((error) => {
@@ -77,10 +90,13 @@ function Tags(props) {
           console.log(error);
         });
     }
-
+    setTags(initialData);
     setIsOpen(false);
   };
 
+  /** 
+   * Cancel form and clear data
+   */
   const handleCancel = () => {
     setIsOpen(false);
     setTags(initialData);
@@ -100,7 +116,8 @@ function Tags(props) {
     <Modal
       title={!!id ? "Edit Tag" : "New Tag"}
       visible={isOpen}
-      onOk={handleOk}
+      onOk={submitForm}
+      okText="Save"
       onCancel={handleCancel}
     >
       <Row>
