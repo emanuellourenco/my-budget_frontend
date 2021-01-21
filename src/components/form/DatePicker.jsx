@@ -3,7 +3,7 @@ import { Row, Col, DatePicker } from "antd";
 import PropTypes from "prop-types";
 
 function DatePickerCol(props) {
-  const { cols, label, name, onChange } = props;
+  const { cols, label, name, onChange, ...other } = props;
 
   return (
     <Col className="date-picker__col" span={cols}>
@@ -19,6 +19,7 @@ function DatePickerCol(props) {
             name={name}
             onChange={onChange}
             style={{ width: "100%" }}
+            {...other}
           />
         </Col>
       </Row>
