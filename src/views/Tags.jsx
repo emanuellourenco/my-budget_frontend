@@ -86,15 +86,7 @@ function Tags() {
    * Update tags list in component didmount
    */
   useEffect(() => {
-    axios
-      .get(`${url}/tags`, { params: data.variables })
-      .then(({ data }) => {
-        setData({ tags: data.tags, total: data.total_count });
-      })
-      .catch((error) => {
-        // handle error
-        console.log(error);
-      });
+    getData();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
