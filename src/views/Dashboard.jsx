@@ -1,9 +1,14 @@
-import React from "react";
-import { Card, Row, Col } from "antd";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Card, Row, Col, Radio } from "antd";
 import MainLayout from "../components/layout/MainLayout";
 import { Chart } from "react-charts";
 
 function Login() {
+  const url = process.env.REACT_APP_URL;
+  const token = localStorage.getItem("token");
+  const [transactions, setTransactions] = useState([]);
+  const [graphType, setGraphType] = useState("2");
   const series = React.useMemo(
     () => ({
       type: "bar",
@@ -11,46 +16,68 @@ function Login() {
     []
   );
 
+  /**
+   * Get transaction data
+   */
+  useEffect(() => {
+    axios
+      .post(`${url}/transactions/charts`, { token, graphType })
+      .then(({ data }) => {
+        setTransactions(data);
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [graphType]);
+
+  const getTransactions = () => {};
+
+  const data = React.useMemo(() => {
+    let income = [];
+    let expense = [];
+    let profit = [];
+
+    const monthList = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Agu",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    if (!!transactions && transactions.data) {
+      income = transactions.data.map((item, index) => {
+        const label =
+          graphType === "1" || graphType === "2" ? monthList[index] : index;
+        return { x: label, y: item.income };
+      });
+
+      expense = transactions.data.map((item, index) => {
+        const label =
+          graphType === "1" || graphType === "2" ? monthList[index] : index;
+        return { x: label, y: item.expense };
+      });
+    }
+
+    return [
+      { label: "Income", datums: income },
+      { label: "Expenses", datums: expense },
+    ];
+  }, [transactions]);
+
   const axes = React.useMemo(
     () => [
       { primary: true, position: "bottom", type: "ordinal" },
-      { position: "left", type: "linear", stacked: false },
-    ],
-    []
-  );
-
-  const data = React.useMemo(
-    () => [
-      {
-        label: "Series 1",
-        datums: [
-          { x: "Jan", y: 60 },
-          { x: "Feb", y: 23 },
-          { x: "Mar", y: 65 },
-          { x: "Apr", y: 84 },
-          { x: "May", y: 87 },
-          { x: "Jun", y: 84 },
-          { x: "Jul", y: 96 },
-          { x: "Agu", y: 88 },
-          { x: "Sep", y: 63 },
-          { x: "Oct", y: 60 },
-        ],
-      },
-      {
-        label: "Series 2",
-        datums: [
-          { x: "Jan", y: 41 },
-          { x: "Feb", y: 15 },
-          { x: "Mar", y: 95 },
-          { x: "Apr", y: 96 },
-          { x: "May", y: 33 },
-          { x: "Jun", y: 96 },
-          { x: "Jul", y: 32 },
-          { x: "Agu", y: 49 },
-          { x: "Sep", y: 18 },
-          { x: "Oct", y: 69 },
-        ],
-      },
+      { position: "left", type: "linear" },
     ],
     []
   );
@@ -63,7 +90,7 @@ function Login() {
             title="Income"
             className="dashboard__card dashboard__card--income"
           >
-            100,00€
+            {parseFloat(transactions.income).toFixed(2)}€
           </Card>
         </Col>
         <Col sm={24} md={12} lg={8}>
@@ -71,7 +98,7 @@ function Login() {
             title="Expense"
             className="dashboard__card dashboard__card--expensive"
           >
-            20,00€
+            {parseFloat(transactions.expense).toFixed(2)}€
           </Card>
         </Col>
         <Col sm={24} md={12} lg={8}>
@@ -79,11 +106,22 @@ function Login() {
             title="Profit"
             className="dashboard__card dashboard__card--profit"
           >
-            80,00€
+            {parseFloat(transactions.income - transactions.expense).toFixed(2)}€
           </Card>
         </Col>
       </Row>
       <Row style={{ height: "500px", padding: "50px 100px" }}>
+        <Col span="24">
+          <Radio.Group
+            onChange={(e) => setGraphType(e.target.value)}
+            defaultValue={graphType}
+          >
+            <Radio.Button value="1">Last Year</Radio.Button>
+            <Radio.Button value="2">This Year</Radio.Button>
+            <Radio.Button value="3">Last Month</Radio.Button>
+            <Radio.Button value="4">This Month</Radio.Button>
+          </Radio.Group>
+        </Col>
         <Col span="24">
           <Chart data={data} series={series} axes={axes} tooltip />
         </Col>
