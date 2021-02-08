@@ -3,16 +3,20 @@ import axios from "axios";
 import { Row, Col, Card, Table, Tag, Button, Tooltip } from "antd";
 import RangePicker from "../components/form/RangePicker";
 import MainLayout from "../components/layout/MainLayout";
-import { PlusOutlined, SearchOutlined, ClearOutlined } from "@ant-design/icons";
-import Select from "../components/form/Select";
+import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
+//import { ClearOutlined } from "@ant-design/icons";
+//import Select from "../components/form/Select";
 import TransactionsModal from "../components/modals/Transactions";
 import ActionButtons from "../components/table/ActionButtons";
 import { TABLE_LIMIT } from "../variables/globalVariables";
-import moment from "moment";
 
 function Transactions() {
   const url = process.env.REACT_APP_URL;
   const token = localStorage.getItem("token");
+  const initialFilters = {
+    date: [],
+    tags: [],
+  };
   const [data, setData] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -25,16 +29,14 @@ function Transactions() {
         orderBy: "date",
         sortBy: "desc",
       },
-      filters: {
-        date: [],
-        tags: [],
-      },
+      filters: initialFilters,
+      withFilters: false,
     }
   );
+  // const [tagsOptions, setTagsOptions] = useState([]);
   const dateFormat = "YYYY-MM-DD";
   const [modalOpen, setModalOpen] = useState(false);
   const [dataId, setdataId] = useState(null);
-
   const columns = [
     {
       title: "Date",
@@ -42,21 +44,27 @@ function Transactions() {
       key: "date",
       width: "100px",
       sorter: true,
-      render: (text) => <span>{text}</span>,
+      render: (text, record) => {
+        const className = getTransactionClass(record.type);
+        return <span className={className}>{text}</span>;
+      },
     },
     {
       title: "Description",
       dataIndex: "description",
       key: "description",
       sorter: true,
-      render: (text) => <span>{text}</span>,
+      render: (text, record) => {
+        const className = getTransactionClass(record.type);
+        return <span className={className}>{text}</span>;
+      },
     },
     {
       title: "Tags",
       key: "tags",
       dataIndex: "tags",
       width: "200px",
-      render: (tags) => (
+      render: (tags, record) => (
         <>
           {tags.map((tag) => {
             const name = tag.tag.name;
@@ -77,6 +85,15 @@ function Transactions() {
       key: "value",
       width: "150px",
       sorter: true,
+      render: (text, record) => {
+        const { type } = record;
+        const className = getTransactionClass(type);
+        return (
+          <span className={className}>{`${type === 2 ? "-" : " "} ${parseFloat(
+            text
+          ).toFixed(2)}`}</span>
+        );
+      },
     },
     {
       title: "Action",
@@ -92,37 +109,48 @@ function Transactions() {
     },
   ];
 
-  const tagsOptions = [
-    {
-      value: "1",
-      label: "Salary",
-      color: "green",
-    },
-    {
-      value: "2",
-      label: "Shop",
-      color: "blue",
-    },
-    {
-      value: "3",
-      label: "Car",
-      color: "red",
-    },
-  ];
+  const getTransactionClass = (type) => {
+    switch (type) {
+      case "2":
+        // 2 - Expense
+        return "expense-transaction";
+      case "3":
+        // 3 - Refund
+        return "refund-transaction";
+      default:
+        // 1 - Income
+        return "income-transaction";
+    }
+  };
 
   /**
    * Update transactions list in component didmount
    */
   useEffect(() => {
     getData();
+
+    /*  axios
+      .post(`${url}/tags/options`, { token })
+      .then(({ data }) => {
+        setTagsOptions(data.tags);
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+      });*/
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const removeData = (key) => {
-    const index = data.findIndex((item) => item.key === key);
-    const newData = [...data];
-    newData.splice(index, 1);
-    setData(newData);
+  const removeData = (id) => {
+    axios
+      .delete(`${url}/transactions/${id}`, { params: data.variables })
+      .then(({ data }) => {
+        setData({ transactions: data.transactions, total: data.total_count });
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+      });
   };
 
   const handleChangeModal = (id) => {
@@ -134,8 +162,11 @@ function Transactions() {
    * Update tags list
    */
   const getData = () => {
+    const { withFilters, variables, filters } = data;
+    const params = !!withFilters ? { ...variables, ...filters } : variables;
+
     axios
-      .get(`${url}/transactions`, { params: data.variables })
+      .get(`${url}/transactions`, { params })
       .then(({ data }) => {
         setData({ transactions: data.transactions, total: data.total_count });
       })
@@ -144,6 +175,16 @@ function Transactions() {
         console.log(error);
       });
   };
+
+  const apllyFilters = () => {
+    setData({ withFilters: true });
+    getData();
+  };
+
+  /* const removeFilters = () => {
+    setData({ withFilters: false, filters: initialFilters });
+    getData();
+  };*/
 
   /**
    * Function to update component variables and call "getData" function to update tags list
@@ -170,6 +211,12 @@ function Transactions() {
     setData({ filters });
   };
 
+  /* const handleSelect = (option) => {
+    let filters = data.filters;
+    filters.tags = option;
+    setData({ filters });
+  };*/
+
   return (
     <MainLayout>
       <Card>
@@ -195,34 +242,38 @@ function Transactions() {
           <RangePicker
             cols="8"
             label="Date"
+            allowClear={true}
             name="rangeDate"
             onChange={handleChangeDate}
             format={dateFormat}
+            value={data.filters.date}
           />
-          <Select
+          {/*   <Select
             cols="12"
             label="Tags"
             name="tags"
             mode="multiple"
             options={tagsOptions}
-          />
+            onChange={handleSelect}
+            value={data.filters.tags}
+       /> */}
           <div style={{ marginTop: "25px" }}>
             <Tooltip title="Apply">
               <Button
                 type="primary"
                 shape="circle"
                 icon={<SearchOutlined />}
-                onClick={() => handleChangeModal(null)}
+                onClick={() => apllyFilters()}
               />
             </Tooltip>
-            <Tooltip title="Clear">
+            {/*    <Tooltip title="Clear">
               <Button
                 type="danger"
                 shape="circle"
                 icon={<ClearOutlined />}
-                onClick={() => handleChangeModal(null)}
+                onClick={() => removeFilters()}
               />
-            </Tooltip>
+      </Tooltip> */}
           </div>
         </Row>
         <Row>
