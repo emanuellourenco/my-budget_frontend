@@ -3,25 +3,21 @@ import axios from "axios";
 import { Card, Row, Col, Radio } from "antd";
 import MainLayout from "../components/layout/MainLayout";
 import { Chart } from "react-charts";
+import { MONTHS } from "../variables/globalVariables";
 
 function Login() {
   const url = process.env.REACT_APP_URL;
   const token = localStorage.getItem("token");
   const [transactions, setTransactions] = useState([]);
-  const [graphType, setGraphType] = useState("2");
-  const series = React.useMemo(
-    () => ({
-      type: "bar",
-    }),
-    []
-  );
+  const [graphTime, setGraphTime] = useState("2");
+  const series = React.useMemo(() => ({ type: "bar" }), []);
 
   /**
-   * Get transaction data
+   * Get transaction data every time te graph time.
    */
   useEffect(() => {
     axios
-      .post(`${url}/transactions/charts`, { token, graphType })
+      .post(`${url}/transactions/charts`, { token, graphTime })
       .then(({ data }) => {
         setTransactions(data);
       })
@@ -30,40 +26,22 @@ function Login() {
         console.log(error);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [graphType]);
-
-  const getTransactions = () => {};
+  }, [graphTime]);
 
   const data = React.useMemo(() => {
     let income = [];
     let expense = [];
-    let profit = [];
-
-    const monthList = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Agu",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
 
     if (!!transactions && transactions.data) {
       income = transactions.data.map((item, index) => {
         const label =
-          graphType === "1" || graphType === "2" ? monthList[index] : index;
+          graphTime === "1" || graphTime === "2" ? MONTHS[index] : index;
         return { x: label, y: item.income };
       });
 
       expense = transactions.data.map((item, index) => {
         const label =
-          graphType === "1" || graphType === "2" ? monthList[index] : index;
+          graphTime === "1" || graphTime === "2" ? MONTHS[index] : index;
         return { x: label, y: item.expense };
       });
     }
@@ -113,8 +91,8 @@ function Login() {
       <Row style={{ height: "500px", padding: "50px 100px" }}>
         <Col span="24">
           <Radio.Group
-            onChange={(e) => setGraphType(e.target.value)}
-            defaultValue={graphType}
+            onChange={(e) => setGraphTime(e.target.value)}
+            defaultValue={graphTime}
           >
             <Radio.Button value="1">Last Year</Radio.Button>
             <Radio.Button value="2">This Year</Radio.Button>
