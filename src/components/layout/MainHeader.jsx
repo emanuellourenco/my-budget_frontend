@@ -1,14 +1,31 @@
 import React from "react";
-import { Layout, Button } from "antd";
-import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
+import { useHistory } from "react-router-dom";
+import { Layout, Button, Dropdown, Menu, Avatar } from "antd";
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
 function MainHeader(props) {
   const { collapsed, setCollapsed, className } = props;
   const { Header } = Layout;
+  const history = useHistory();
 
   const toggle = () => {
     setCollapsed(!collapsed);
   };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    history.push("/login");
+  };
+
+  const menu = (
+    <Menu>
+      <Menu.Item onClick={() => logout()}>Logout</Menu.Item>
+    </Menu>
+  );
 
   return (
     <Header className={className}>
@@ -16,6 +33,11 @@ function MainHeader(props) {
         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         onClick={() => toggle()}
       />
+      <div className="header--buttons">
+        <Dropdown overlay={menu} placement="bottomRight" arrow trigger="click">
+          <Avatar icon={<UserOutlined />} />
+        </Dropdown>
+      </div>
     </Header>
   );
 }
