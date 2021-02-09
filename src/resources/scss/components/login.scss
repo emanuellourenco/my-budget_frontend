@@ -10,43 +10,52 @@
   margin-top: 50vh;
   transform: translate(0, -50%);
 }
-/*
-.login__button,
-.login__button:hover {
-  background-color: $login-button-background-color;
-  color: $login-button-color;
-}*/
+
+.info__block {
+  width: 100%;
+  color: white;
+  text-align: center;
+  margin-top: 50vh;
+  transform: translate(0, -50%);
+  height: 140px;
+}
 
 .auth {
   display: flex;
   overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  background-color: $login-background-color;
 
-  &.auth__login {
+  .auth--form {
     width: 50vw;
     height: 100vh;
-    background: $login-background-color;
-    transition: width 2s;
+    position: absolute;
+    left: 0;
+    transition: all 2s linear;
 
-    &.hide--login {
-      width: 0;
+    &.right {
+      transform: translateX(0, 50vh);
+      left: 50vw;
     }
   }
-
-  &.auth__signup {
+  .auth--info {
     width: 50vw;
     height: 100vh;
-    background: $signup-background-color;
-    transition: width 2s;
+    background-color: $auth-background-color;
 
-    &.hide--signup {
-      width: 0;
+    position: absolute;
+    left: 0;
+    transition: all 2s linear;
+
+    &.right {
+      transform: translateX(0, -50vh);
+      left: 50vw;
     }
-  }
-
-  &.auth__block {
-    width: 50vw;
-    height: 100vh;
-    background: $auth-background-color;
-    z-index: 10;
+    > .ant-rowp {
+      width: 100%;
+      display: block;
+      background-color: red;
+    }
   }
 }
