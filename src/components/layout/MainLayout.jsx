@@ -5,7 +5,9 @@ import MainSidebar from "./MainSidebar";
 
 function MainLayout(props) {
   const { children } = props;
-  const [collapsed, setCollapsed] = useState(false);
+  const currentCollapsedStatus =
+    localStorage.getItem("collapsed") === "true" ? true : false;
+  const [collapsed, setCollapsed] = useState(currentCollapsedStatus);
   const { Content } = Layout;
 
   return (

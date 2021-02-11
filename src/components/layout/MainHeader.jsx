@@ -14,6 +14,7 @@ function MainHeader(props) {
 
   const toggle = () => {
     setCollapsed(!collapsed);
+    localStorage.setItem("collapsed", !collapsed);
   };
 
   const logout = () => {

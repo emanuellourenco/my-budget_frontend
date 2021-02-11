@@ -3,7 +3,7 @@ import { Layout, Menu } from "antd";
 import { HomeOutlined, ProfileOutlined, TagsOutlined } from "@ant-design/icons";
 import { Link, useHistory } from "react-router-dom";
 
-function MainLayout(props) {
+function MainSidebar(props) {
   const { collapsed, className } = props;
   const { Sider } = Layout;
   const { location } = useHistory();
@@ -46,4 +46,4 @@ function MainLayout(props) {
   );
 }
 
-export default MainLayout;
+export default MainSidebar;
