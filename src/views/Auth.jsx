@@ -6,7 +6,10 @@ import Signup from "../components/auth/Signup";
 
 function Auth() {
   const history = useHistory();
-  const [form, setForm] = useState("login");
+  const { pathname } = history.location;
+  const formUrl = pathname === "/signup" ? "signup" : "login";
+  formUrl.replace("\\", "");
+  const [form, setForm] = useState(formUrl);
   const [hideForm, setHideForm] = useState(false);
   let buttonLabel = form === "login" ? "Signup" : "Login";
 
