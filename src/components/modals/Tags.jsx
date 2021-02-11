@@ -59,42 +59,28 @@ function Tags(props) {
    * Submit form, clear data and close modal
    */
   const submitForm = () => {
-    if (!!tags.id) {
-      axios
-        .put(`${url}/tags/${id}`, {
-          name: tags.name,
-          color: tags.color,
-          rule: tags.rule,
-          token,
-        })
-        .then(({ data }) => {
-          setData(data.tags);
-        })
-        .catch((error) => {
-          // handle error
-          console.log(error);
-        });
-    } else {
-      axios
-        .post(`${url}/tags`, {
-          name: tags.name,
-          color: tags.color,
-          rule: tags.rule,
-          token,
-        })
-        .then(({ data }) => {
-          setData(data.tags);
-        })
-        .catch((error) => {
-          // handle error
-          console.log(error);
-        });
-    }
+    const method = !!tags.id ? "put" : "post";
+    const formUrl = !!tags.id ? `${url}/tags/${id}` : `${url}/tags`;
+
+    axios[method](formUrl, {
+      name: tags.name,
+      color: tags.color,
+      rule: tags.rule,
+      token,
+    })
+      .then(({ data }) => {
+        setData({ tags: data.tags, total: data.total_count });
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+      });
+
     setTags(initialData);
     setIsOpen(false);
   };
 
-  /** 
+  /**
    * Cancel form and clear data
    */
   const handleCancel = () => {
