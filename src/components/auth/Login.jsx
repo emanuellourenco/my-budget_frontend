@@ -8,6 +8,7 @@ import axios from "axios";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
   const url = process.env.REACT_APP_URL;
   const history = useHistory();
 
@@ -18,7 +19,11 @@ function Login() {
         password,
       })
       .then(({ data }) => {
-        const { token } = data;
+        const { status, token, message } = data;
+
+        if (status === "error") {
+          setError(message);
+        }
 
         if (!!token) {
           localStorage.setItem("token", token);
@@ -50,6 +55,7 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <Col span="24">
+            {!!error && <span className="login__error">{error}</span>}
             <Row justify="center">
               <Button
                 className="login__button"
