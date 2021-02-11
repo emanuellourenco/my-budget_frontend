@@ -2,9 +2,10 @@ import React from "react";
 import { Col, Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import PropTypes from "prop-types";
+import { fetchErrors } from "../../utils/fetchErrors";
 
 function PasswordCol(props) {
-  const { cols, name, label, placeholder, ...other } = props;
+  const { cols, name, label, placeholder, errors, ...other } = props;
 
   return (
     <Col className="input__col" span={cols}>
@@ -18,6 +19,7 @@ function PasswordCol(props) {
         }
         {...other}
       />
+      {fetchErrors({ errors, name })}
     </Col>
   );
 }
@@ -27,6 +29,7 @@ PasswordCol.defaultProps = {
   name: "name",
   label: "",
   placeholder: "",
+  errors: [],
 };
 
 PasswordCol.propTypes = {
@@ -34,6 +37,7 @@ PasswordCol.propTypes = {
   name: PropTypes.string,
   label: PropTypes.string,
   placeholder: PropTypes.string,
+  errors: PropTypes.array,
 };
 
 export default PasswordCol;
