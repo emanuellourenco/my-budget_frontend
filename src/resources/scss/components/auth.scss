@@ -26,6 +26,13 @@
   height: 140px;
 }
 
+.auth--lang-selector {
+  z-index: 2;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
 .auth {
   display: flex;
   overflow: hidden;
