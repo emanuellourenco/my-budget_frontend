@@ -2,13 +2,15 @@ import React from "react";
 import { Button, Tooltip } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 function ActionButtons(props) {
+  const { t } = useTranslation();
   const { record, handleChangeModal, removeData } = props;
 
   return (
     <div className="action-buttons">
-      <Tooltip title="Edit">
+      <Tooltip title={t("Edit")}>
         <Button
           type="primary"
           shape="circle"
@@ -16,7 +18,7 @@ function ActionButtons(props) {
           onClick={() => handleChangeModal(record.key)}
         />
       </Tooltip>
-      <Tooltip title="Delete">
+      <Tooltip title={t("Delete")}>
         <Button
           type="danger"
           shape="circle"

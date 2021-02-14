@@ -4,8 +4,10 @@ import { Card, Row, Col, Radio } from "antd";
 import MainLayout from "../components/layout/MainLayout";
 import { Chart } from "react-charts";
 import { MONTHS } from "../variables/globalVariables";
+import { useTranslation } from "react-i18next";
 
 function Login() {
+  const { t } = useTranslation();
   const url = process.env.REACT_APP_URL;
   const token = localStorage.getItem("token");
   const [transactions, setTransactions] = useState([]);
@@ -47,8 +49,8 @@ function Login() {
     }
 
     return [
-      { label: "Income", datums: income },
-      { label: "Expenses", datums: expense },
+      { label: t("Income"), datums: income },
+      { label: t("Expense"), datums: expense },
     ];
   }, [transactions]);
 
@@ -65,7 +67,7 @@ function Login() {
       <Row>
         <Col sm={24} md={12} lg={8}>
           <Card
-            title="Income"
+            title={t("Income")}
             className="dashboard__card dashboard__card--income"
           >
             {parseFloat(transactions.income).toFixed(2)}€
@@ -73,7 +75,7 @@ function Login() {
         </Col>
         <Col sm={24} md={12} lg={8}>
           <Card
-            title="Expense"
+            title={t("Expense")}
             className="dashboard__card dashboard__card--expensive"
           >
             {parseFloat(transactions.expense).toFixed(2)}€
@@ -81,7 +83,7 @@ function Login() {
         </Col>
         <Col sm={24} md={12} lg={8}>
           <Card
-            title="Profit"
+            title={t("Profit")}
             className="dashboard__card dashboard__card--profit"
           >
             {parseFloat(transactions.income - transactions.expense).toFixed(2)}€
@@ -94,10 +96,10 @@ function Login() {
             onChange={(e) => setGraphTime(e.target.value)}
             defaultValue={graphTime}
           >
-            <Radio.Button value="1">Last Year</Radio.Button>
-            <Radio.Button value="2">This Year</Radio.Button>
-            <Radio.Button value="3">Last Month</Radio.Button>
-            <Radio.Button value="4">This Month</Radio.Button>
+            <Radio.Button value="1">{t("Last Year")}</Radio.Button>
+            <Radio.Button value="2">{t("This Year")}</Radio.Button>
+            <Radio.Button value="3">{t("Last Month")}</Radio.Button>
+            <Radio.Button value="4">{t("This Month")}</Radio.Button>
           </Radio.Group>
         </Col>
         <Col span="24">

@@ -3,8 +3,10 @@ import axios from "axios";
 import Input from "../form/Input";
 import Select from "../form/Select";
 import { Modal, Row } from "antd";
+import { useTranslation } from "react-i18next";
 
 function Tags(props) {
+  const { t } = useTranslation();
   const { id, isOpen, setIsOpen, setData } = props;
   const initialData = {
     id: "",
@@ -100,7 +102,7 @@ function Tags(props) {
 
   return (
     <Modal
-      title={!!id ? "Edit Tag" : "New Tag"}
+      title={!!id ? t("Edit Tag") : t("New Tag")}
       visible={isOpen}
       onOk={submitForm}
       okText="Save"
@@ -110,13 +112,13 @@ function Tags(props) {
         <Input
           cols="12"
           name="name"
-          label="Tag Name"
+          label={t("Name")}
           value={tags.name}
           onChange={handleChange}
         />
         <Select
           cols="12"
-          label="Tag Color"
+          label={t("Color")}
           name="color"
           options={colors}
           value={tags.color}
@@ -125,7 +127,7 @@ function Tags(props) {
         <Input
           cols="24"
           name="rule"
-          label="Rule"
+          label={t("Rule")}
           value={tags.rule}
           onChange={handleChange}
         />

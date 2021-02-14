@@ -2,23 +2,25 @@ import React from "react";
 import { Layout, Menu } from "antd";
 import { HomeOutlined, ProfileOutlined, TagsOutlined } from "@ant-design/icons";
 import { Link, useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function MainSidebar(props) {
+  const { t } = useTranslation();
   const { collapsed, className } = props;
   const { Sider } = Layout;
   const { location } = useHistory();
   const menuItems = [
-    { key: "1", icon: <HomeOutlined />, label: "Dashboard", url: "/" },
+    { key: "1", icon: <HomeOutlined />, label: t("Dashboard"), url: "/" },
     {
       key: "2",
       icon: <ProfileOutlined />,
-      label: "Transactions",
+      label: t("Transactions"),
       url: "/transactions",
     },
     {
       key: "3",
       icon: <TagsOutlined />,
-      label: "Tags",
+      label: t("Tags"),
       url: "/tags",
     },
   ];

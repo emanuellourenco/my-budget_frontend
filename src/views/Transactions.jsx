@@ -9,8 +9,10 @@ import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import TransactionsModal from "../components/modals/Transactions";
 import ActionButtons from "../components/table/ActionButtons";
 import { TABLE_LIMIT } from "../variables/globalVariables";
+import { useTranslation } from "react-i18next";
 
 function Transactions() {
+  const { t } = useTranslation();
   const url = process.env.REACT_APP_URL;
   const token = localStorage.getItem("token");
   const initialFilters = {
@@ -39,7 +41,7 @@ function Transactions() {
   const [dataId, setdataId] = useState(null);
   const columns = [
     {
-      title: "Date",
+      title: t("Date"),
       dataIndex: "date",
       key: "date",
       width: "100px",
@@ -50,7 +52,7 @@ function Transactions() {
       },
     },
     {
-      title: "Description",
+      title: t("Description"),
       dataIndex: "description",
       key: "description",
       sorter: true,
@@ -60,7 +62,7 @@ function Transactions() {
       },
     },
     {
-      title: "Tags",
+      title: t("Tags"),
       key: "tags",
       dataIndex: "tags",
       width: "200px",
@@ -80,7 +82,7 @@ function Transactions() {
       ),
     },
     {
-      title: "Value",
+      title: t("Value"),
       dataIndex: "value",
       key: "value",
       width: "150px",
@@ -96,7 +98,7 @@ function Transactions() {
       },
     },
     {
-      title: "Action",
+      title: t("Action"),
       key: "action",
       width: "100px",
       render: (text, record) => (
@@ -222,10 +224,10 @@ function Transactions() {
       <Card>
         <Row>
           <Col span="18">
-            <h3>Transactions List</h3>
+            <h3>{t("Transactions List")}</h3>
           </Col>
           <Col span="6" style={{ textAlign: "right" }}>
-            <Tooltip title="Add Transaction">
+            <Tooltip title={t("Add Transaction")}>
               <Button
                 type="primary"
                 shape="circle"
@@ -237,11 +239,11 @@ function Transactions() {
         </Row>
         <Row>
           <Col span="24">
-            <h4>Filters</h4>
+            <h4>{t("Filters")}</h4>
           </Col>
           <RangePicker
             cols="8"
-            label="Date"
+            label={t("Date")}
             allowClear={true}
             name="rangeDate"
             onChange={handleChangeDate}
@@ -258,7 +260,7 @@ function Transactions() {
             value={data.filters.tags}
        /> */}
           <div style={{ marginTop: "25px" }}>
-            <Tooltip title="Apply">
+            <Tooltip title={t("Apply")}>
               <Button
                 type="primary"
                 shape="circle"

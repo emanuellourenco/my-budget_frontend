@@ -4,8 +4,10 @@ import { Button, Row, Col } from "antd";
 import Input from "../form/Input";
 import InputPassword from "../form/InputPassword";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 function Login() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -40,16 +42,16 @@ function Login() {
     <div className="login__block">
       <Row justify="center">
         <Col span="12">
-          <h1>Login</h1>
+          <h1>{t("Login")}</h1>
           <Input
-            label="Email"
+            label={t("Email")}
             name="loginEmail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
           <InputPassword
-            label="Password"
+            label={t("Password")}
             name="loginPassword"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -62,7 +64,7 @@ function Login() {
                 shape="round"
                 onClick={() => submitForm()}
               >
-                Login
+                {t("Login")}
               </Button>
             </Row>
           </Col>

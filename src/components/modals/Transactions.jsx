@@ -5,8 +5,10 @@ import Select from "../form/Select";
 import DatePicker from "../form/DatePicker";
 import { Modal, Radio, Row } from "antd";
 import moment from "moment";
+import { useTranslation } from "react-i18next";
 
 function Tags(props) {
+  const { t } = useTranslation();
   const { id, isOpen, setIsOpen, setData } = props;
   const initialData = {
     id: "",
@@ -124,7 +126,7 @@ function Tags(props) {
 
   return (
     <Modal
-      title={!!id ? "Edit Transaction" : "New Transaction"}
+      title={!!id ? t("Edit Transaction") : t("New Transaction")}
       visible={isOpen}
       onOk={submitForm}
       okText="Save"
@@ -136,20 +138,20 @@ function Tags(props) {
           value={transaction.type}
           onChange={handleChange}
         >
-          <Radio value={1}>Income</Radio>
-          <Radio value={2}>Expense</Radio>
-          <Radio value={3}>Refund</Radio>
+          <Radio value={1}>{t("Income")}</Radio>
+          <Radio value={2}>{t("Expense")}</Radio>
+          <Radio value={3}>{t("Refund")}</Radio>
         </Radio.Group>
         <Input
           cols="24"
           name="description"
-          label="Description"
+          label={t("Description")}
           value={transaction.description}
           onChange={handleChange}
         />
         <DatePicker
           cols="7"
-          label="Date"
+          label={t("Date")}
           name="date"
           value={moment(transaction.date)}
           onChange={handleChangeDate}
@@ -158,13 +160,13 @@ function Tags(props) {
         <Input
           cols="5"
           name="value"
-          label="Value"
+          label={t("Value")}
           value={transaction.value}
           onChange={handleChange}
         />
         <Select
           cols="12"
-          label="Tags"
+          label={t("Tags")}
           name="tags"
           mode="multiple"
           options={tagsOptions}

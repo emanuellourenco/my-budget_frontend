@@ -4,8 +4,10 @@ import Input from "../form/Input";
 import InputPassword from "../form/InputPassword";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function Login() {
+  const { t } = useTranslation();
   const url = process.env.REACT_APP_URL;
   const history = useHistory();
   const [errors, setErrors] = useState([]);
@@ -62,16 +64,16 @@ function Login() {
     <div className="signup__block">
       <Row justify="center">
         <Col span="12">
-          <h1>Sign Up</h1>
+          <h1>{t("Sign Up")}</h1>
           <Input
-            label="Name"
+            label={t("Name")}
             name="name"
             value={user.name}
             onChange={handleChange}
             errors={errors}
           />
           <Input
-            label="Email"
+            label={t("Email")}
             name="email"
             value={user.email}
             onChange={handleChange}
@@ -79,14 +81,14 @@ function Login() {
           />
 
           <InputPassword
-            label="Password"
+            label={t("Password")}
             name="password"
             value={user.password}
             onChange={handleChange}
             errors={errors}
           />
           <InputPassword
-            label="Password"
+            label={t("Password")}
             name="password2"
             value={user.password2}
             onChange={handleChange}
@@ -98,7 +100,7 @@ function Login() {
               shape="round"
               onClick={() => submitForm()}
             >
-              Signup
+              {t("Sign Up")}
             </Button>
           </Col>
         </Col>

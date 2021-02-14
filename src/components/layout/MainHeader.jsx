@@ -6,11 +6,13 @@ import {
   MenuFoldOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import i18n, { langOptions } from "../../config/i18n";
 
 function MainHeader(props) {
   const { collapsed, setCollapsed, className } = props;
   const { Header } = Layout;
   const history = useHistory();
+  const currentLanguage = i18n.language;
 
   const toggle = () => {
     setCollapsed(!collapsed);
@@ -28,6 +30,20 @@ function MainHeader(props) {
     </Menu>
   );
 
+  const langMenu = (
+    <Menu selectedKeys={currentLanguage}>
+      {langOptions.map((option) => (
+        <Menu.Item key={option} onClick={() => changeLanguage(option)}>
+          {option.toUpperCase()}
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <Header className={className}>
       <Button
@@ -35,6 +51,14 @@ function MainHeader(props) {
         onClick={() => toggle()}
       />
       <div className="header--buttons">
+        <Dropdown
+          overlay={langMenu}
+          placement="bottomRight"
+          arrow
+          trigger="click"
+        >
+          <Avatar>{currentLanguage.toUpperCase()}</Avatar>
+        </Dropdown>
         <Dropdown overlay={menu} placement="bottomRight" arrow trigger="click">
           <Avatar icon={<UserOutlined />} />
         </Dropdown>

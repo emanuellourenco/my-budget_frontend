@@ -6,8 +6,10 @@ import { PlusOutlined } from "@ant-design/icons";
 import TagModal from "../components/modals/Tags";
 import ActionButtons from "../components/table/ActionButtons";
 import { TABLE_LIMIT } from "../variables/globalVariables";
+import { useTranslation } from "react-i18next";
 
 function Tags() {
+  const { t } = useTranslation();
   const url = process.env.REACT_APP_URL;
   const token = localStorage.getItem("token");
   const [data, setData] = useReducer(
@@ -29,7 +31,7 @@ function Tags() {
 
   const columns = [
     {
-      title: "Name",
+      title: t("Name"),
       dataIndex: "name",
       key: "name",
       width: "200px",
@@ -37,14 +39,14 @@ function Tags() {
       render: (text, record) => <Tag color={record.color}>{text}</Tag>,
     },
     {
-      title: "Rule",
+      title: t("Rule"),
       dataIndex: "rule",
       key: "rule",
       sorter: true,
       render: (text) => <span>{text}</span>,
     },
     {
-      title: "Action",
+      title: t("Action"),
       key: "action",
       width: "100px",
       render: (text, record) => (
@@ -130,10 +132,10 @@ function Tags() {
       <Card>
         <Row>
           <Col span="18">
-            <h1>Tag List</h1>
+            <h1>{t("Tag List")}</h1>
           </Col>
           <Col span="6" style={{ textAlign: "right" }}>
-            <Tooltip title="Add">
+            <Tooltip title={t("Add")}>
               <Button
                 type="primary"
                 shape="circle"
