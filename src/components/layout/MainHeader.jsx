@@ -7,8 +7,10 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import i18n, { langOptions } from "../../config/i18n";
+import { useTranslation } from "react-i18next";
 
 function MainHeader(props) {
+  const { t } = useTranslation();
   const { collapsed, setCollapsed, className } = props;
   const { Header } = Layout;
   const history = useHistory();
@@ -26,7 +28,8 @@ function MainHeader(props) {
 
   const menu = (
     <Menu>
-      <Menu.Item onClick={() => logout()}>Logout</Menu.Item>
+      <Menu.Item onClick={() => history.push("/settings")}>{t("Settings")}</Menu.Item>
+      <Menu.Item onClick={() => logout()}>{t("Logout")}</Menu.Item>
     </Menu>
   );
 
