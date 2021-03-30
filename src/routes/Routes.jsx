@@ -6,12 +6,14 @@ import Transactions from "../views/Transactions";
 import Tags from "../views/Tags";
 
 import PrivateRoute from "./PrivateRoute";
+import Settings from "../views/Settings";
 
 function Routes() {
   return (
     <Switch>
       <Route path="/login" component={Auth} />
       <Route path="/signup" component={Auth} />
+      <Route path="/settings" component={Settings} />
 
       <PrivateRoute path="/" exact component={Dashboard} />
       <PrivateRoute path="/transactions" component={Transactions} />
