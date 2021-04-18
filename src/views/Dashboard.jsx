@@ -23,7 +23,7 @@ function Login() {
       .then(({ data }) => {
         setTransactions(data);
       })
-      .catch((error) => {
+      .catch(error => {
         // handle error
         console.log(error);
       });
@@ -50,14 +50,16 @@ function Login() {
 
     return [
       { label: t("Income"), datums: income },
-      { label: t("Expense"), datums: expense },
+      { label: t("Expense"), datums: expense }
     ];
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transactions]);
 
   const axes = React.useMemo(
     () => [
       { primary: true, position: "bottom", type: "ordinal" },
-      { position: "left", type: "linear" },
+      { position: "left", type: "linear" }
     ],
     []
   );
@@ -90,11 +92,12 @@ function Login() {
           </Card>
         </Col>
       </Row>
-      <Row style={{ height: "500px", padding: "50px 100px" }}>
+      <Row className="dashboard__chart">
         <Col span="24">
           <Radio.Group
-            onChange={(e) => setGraphTime(e.target.value)}
+            onChange={e => setGraphTime(e.target.value)}
             defaultValue={graphTime}
+            className="dashboard--radio"
           >
             <Radio.Button value="1">{t("Last Year")}</Radio.Button>
             <Radio.Button value="2">{t("This Year")}</Radio.Button>
