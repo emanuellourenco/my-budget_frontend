@@ -6,12 +6,17 @@
   }
 
   &--income {
-    background-color: green;
+    background-color: $income-card-background-color;
   }
   &--expensive {
-    background-color: red;
+    background-color: $expense-card-background-color;
   }
   &--profit {
-    background-color: blue;
+    background-color: $profit-card-background-color;
   }
+}
+
+.dashboard__chart {
+  height: 500px;
+  padding: 50px 100px;
 }

@@ -1,0 +1,14 @@
+.dashboard--radio > .ant-radio-button-wrapper {
+  border-radius: 20px;
+  margin: 10px 5px;
+  background-color: $radio-button-background-color;
+  color: #fff;
+
+  &:before {
+    background-color: unset;
+  }
+
+  &-checked {
+    background-color: $radio-button-background-color-active;
+  }
+}
