@@ -4,8 +4,8 @@ import { Row, Col, Card, Table, Tag, Button, Tooltip } from "antd";
 import RangePicker from "../components/form/RangePicker";
 import MainLayout from "../components/layout/MainLayout";
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
-//import { ClearOutlined } from "@ant-design/icons";
-//import Select from "../components/form/Select";
+import { ClearOutlined } from "@ant-design/icons";
+import Select from "../components/form/Select";
 import TransactionsModal from "../components/modals/Transactions";
 import ActionButtons from "../components/table/ActionButtons";
 import { TABLE_LIMIT } from "../variables/globalVariables";
@@ -17,7 +17,7 @@ function Transactions() {
   const token = localStorage.getItem("token");
   const initialFilters = {
     date: [],
-    tags: [],
+    tags: []
   };
   const [data, setData] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
@@ -29,13 +29,13 @@ function Transactions() {
         offset: 0,
         limit: TABLE_LIMIT,
         orderBy: "date",
-        sortBy: "desc",
+        sortBy: "desc"
       },
       filters: initialFilters,
-      withFilters: false,
+      withFilters: false
     }
   );
-  // const [tagsOptions, setTagsOptions] = useState([]);
+  const [tagsOptions, setTagsOptions] = useState([]);
   const dateFormat = "YYYY-MM-DD";
   const [modalOpen, setModalOpen] = useState(false);
   const [dataId, setdataId] = useState(null);
@@ -49,7 +49,7 @@ function Transactions() {
       render: (text, record) => {
         const className = getTransactionClass(record.type);
         return <span className={className}>{text}</span>;
-      },
+      }
     },
     {
       title: t("Description"),
@@ -59,7 +59,7 @@ function Transactions() {
       render: (text, record) => {
         const className = getTransactionClass(record.type);
         return <span className={className}>{text}</span>;
-      },
+      }
     },
     {
       title: t("Tags"),
@@ -68,7 +68,7 @@ function Transactions() {
       width: "200px",
       render: (tags, record) => (
         <>
-          {tags.map((tag) => {
+          {tags.map(tag => {
             const name = tag.tag.name;
             const color = tag.tag.color;
 
@@ -79,7 +79,7 @@ function Transactions() {
             );
           })}
         </>
-      ),
+      )
     },
     {
       title: t("Value"),
@@ -95,7 +95,7 @@ function Transactions() {
             text
           ).toFixed(2)}`}</span>
         );
-      },
+      }
     },
     {
       title: t("Action"),
@@ -107,11 +107,11 @@ function Transactions() {
           handleChangeModal={handleChangeModal}
           removeData={removeData}
         />
-      ),
-    },
+      )
+    }
   ];
 
-  const getTransactionClass = (type) => {
+  const getTransactionClass = type => {
     switch (type) {
       case "2":
         // 2 - Expense
@@ -131,31 +131,31 @@ function Transactions() {
   useEffect(() => {
     getData();
 
-    /*  axios
+    axios
       .post(`${url}/tags/options`, { token })
       .then(({ data }) => {
         setTagsOptions(data.tags);
       })
-      .catch((error) => {
+      .catch(error => {
         // handle error
         console.log(error);
-      });*/
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const removeData = (id) => {
+  const removeData = id => {
     axios
       .delete(`${url}/transactions/${id}`, { params: data.variables })
       .then(({ data }) => {
         setData({ transactions: data.transactions, total: data.total_count });
       })
-      .catch((error) => {
+      .catch(error => {
         // handle error
         console.log(error);
       });
   };
 
-  const handleChangeModal = (id) => {
+  const handleChangeModal = id => {
     setModalOpen(true);
     setdataId(id);
   };
@@ -166,13 +166,14 @@ function Transactions() {
   const getData = () => {
     const { withFilters, variables, filters } = data;
     const params = !!withFilters ? { ...variables, ...filters } : variables;
+    console.log("🚀 ~ getData ~ params", params);
 
     axios
       .get(`${url}/transactions`, { params })
       .then(({ data }) => {
         setData({ transactions: data.transactions, total: data.total_count });
       })
-      .catch((error) => {
+      .catch(error => {
         // handle error
         console.log(error);
       });
@@ -183,10 +184,10 @@ function Transactions() {
     getData();
   };
 
-  /* const removeFilters = () => {
+  const removeFilters = () => {
     setData({ withFilters: false, filters: initialFilters });
     getData();
-  };*/
+  };
 
   /**
    * Function to update component variables and call "getData" function to update tags list
@@ -213,11 +214,11 @@ function Transactions() {
     setData({ filters });
   };
 
-  /* const handleSelect = (option) => {
+  const handleSelect = option => {
     let filters = data.filters;
     filters.tags = option;
-    setData({ filters });
-  };*/
+    setData({ filters, withFilters: true });
+  };
 
   return (
     <MainLayout>
@@ -250,7 +251,7 @@ function Transactions() {
             format={dateFormat}
             value={data.filters.date}
           />
-          {/*   <Select
+          <Select
             cols="12"
             label="Tags"
             name="tags"
@@ -258,7 +259,7 @@ function Transactions() {
             options={tagsOptions}
             onChange={handleSelect}
             value={data.filters.tags}
-       /> */}
+          />
           <div style={{ marginTop: "25px" }}>
             <Tooltip title={t("Apply")}>
               <Button
@@ -285,7 +286,7 @@ function Transactions() {
               dataSource={data.transactions}
               pagination={{
                 pageSize: TABLE_LIMIT,
-                total: data.total,
+                total: data.total
               }}
               onChange={onChange}
             />
