@@ -12,7 +12,14 @@ function Login() {
   const token = localStorage.getItem("token");
   const [transactions, setTransactions] = useState([]);
   const [graphTime, setGraphTime] = useState("2");
-  const series = React.useMemo(() => ({ type: "bar" }), []);
+  const series = React.useCallback(
+    ({ label }) => ({
+      type: label === "Profit" ? "line" : "bar",
+      showPoints: false
+    }),
+
+    []
+  );
 
   /**
    * Get transaction data every time te graph time.
@@ -33,6 +40,7 @@ function Login() {
   const data = React.useMemo(() => {
     let income = [];
     let expense = [];
+    let profit = [];
 
     if (!!transactions && transactions.data) {
       income = transactions.data.map((item, index) => {
@@ -44,13 +52,20 @@ function Login() {
       expense = transactions.data.map((item, index) => {
         const label =
           graphTime === "1" || graphTime === "2" ? MONTHS[index] : index;
-        return { x: label, y: item.expense };
+        return { x: label, y: -item.expense };
+      });
+
+      profit = transactions.data.map((item, index) => {
+        const label =
+          graphTime === "1" || graphTime === "2" ? MONTHS[index] : index;
+        return { x: label, y: item.income - item.expense };
       });
     }
 
     return [
-      { label: t("Income"), datums: income },
-      { label: t("Expense"), datums: expense }
+      { label: t("Profit"), datums: profit, color: "#52c41a" },
+      { label: t("Income"), datums: income, color: "#1890ff" },
+      { label: t("Expense"), datums: expense, color: "#ff4d4f" }
     ];
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
